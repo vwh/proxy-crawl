@@ -5,9 +5,52 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Proxy Crawl</title>
+    <!-- Fonts -->
+    <link
+      rel="preload"
+      href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;500;700&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+      as="style"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;500;700&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;500;700&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+      />
+    </noscript>
+    <!-- Critical CSS -->
+    <style>
+      body {
+        font-family: "Fira Mono", monospace;
+      }
+
+      .no-js-message {
+        text-align: center;
+        margin-top: 20%;
+      }
+
+      .no-js-h1 {
+        font-size: 2rem;
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <noscript>
+      <div class="no-js-message">
+        <h1 class="no-js-h1">JavaScript Required</h1>
+        <p>
+          We're sorry, but this application requires JavaScript to function
+          correctly. Please enable JavaScript in your browser and reload the
+          page.
+        </p>
+      </div>
+    </noscript>
   </body>
 </html>
