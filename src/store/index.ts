@@ -11,6 +11,11 @@ interface StoreState {
   setSocks4Resources: (resources: string[]) => void;
   setSocks5Resources: (resources: string[]) => void;
 
+  selectedResource: ProxyType;
+  setSelectedResource: (resource: ProxyType) => void;
+
+  getResources: () => string[];
+
   results: string[];
   setResults: (results: string[]) => void;
   addResult: (result: string) => void;
@@ -18,9 +23,9 @@ interface StoreState {
   isCrawling: boolean;
   setIsCrawling: (isCrawling: boolean) => void;
 
-  exportAsText: (type: ProxyType) => string;
-  exportAsCSV: (type: ProxyType) => string;
-  exportAsJSON: (type: ProxyType) => string;
+  exportAsText: () => string;
+  exportAsCSV: () => string;
+  exportAsJSON: () => string;
 }
 
 const useStore = create<StoreState>((set, get) => ({
@@ -34,6 +39,10 @@ const useStore = create<StoreState>((set, get) => ({
   setSocks5Resources: (resources: string[]) =>
     set({ socks5Resources: resources }),
 
+  selectedResource: "http/s",
+  setSelectedResource: (resource: ProxyType) =>
+    set({ selectedResource: resource }),
+
   results: [],
   setResults: (results: string[]) => set({ results }),
   addResult: (result: string) =>
@@ -42,18 +51,20 @@ const useStore = create<StoreState>((set, get) => ({
   isCrawling: false,
   setIsCrawling: (isCrawling: boolean) => set({ isCrawling }),
 
-  exportAsText: (type: ProxyType) => {
-    const resources = getResourcesByType(get(), type);
+  getResources: () => getResourcesByType(get(), get().selectedResource),
+
+  exportAsText: () => {
+    const resources = getResourcesByType(get(), get().selectedResource);
     return resources.join("\n");
   },
 
-  exportAsCSV: (type: ProxyType) => {
-    const resources = getResourcesByType(get(), type);
+  exportAsCSV: () => {
+    const resources = getResourcesByType(get(), get().selectedResource);
     return resources.map((resource) => `"${resource}"`).join(",");
   },
 
-  exportAsJSON: (type: ProxyType) => {
-    const resources = getResourcesByType(get(), type);
+  exportAsJSON: () => {
+    const resources = getResourcesByType(get(), get().selectedResource);
     return JSON.stringify(resources, null, 2);
   },
 }));
