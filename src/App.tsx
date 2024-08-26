@@ -1,15 +1,9 @@
-import ResourcesSection from "./components/resources-section";
-import ResultSection from "./components/result-section";
-
-function App() {
+export default function App() {
   return (
-    <div className="container mx-auto h-screen p-4">
-      <main className="flex flex-col gap-4 h-full">
-        <ResourcesSection />
-        <ResultSection />
-      </main>
+    <div className="flex h-full flex-col items-center justify-center gap-4 px-4">
+      <section className="flex flex-col items-center gap-1 text-center">
+        <h1 className="text-3xl font-semibold">Proxy Crawl</h1>
+      </section>
     </div>
   );
 }
-
-export default App;
