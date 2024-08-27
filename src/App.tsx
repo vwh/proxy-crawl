@@ -1,15 +1,13 @@
 import ResourcesSection from "./components/resources-section";
 import ResultSection from "./components/result-section";
 
-function App() {
+export default function App() {
   return (
-    <div className="container mx-auto h-screen p-4">
-      <main className="flex h-full flex-col gap-4">
+    <main className="container mx-auto h-screen p-4">
+      <div className="flex h-full flex-col gap-4">
         <ResourcesSection />
         <ResultSection />
-      </main>
-    </div>
+      </div>
+    </main>
   );
 }
-
-export default App;
