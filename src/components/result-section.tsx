@@ -3,12 +3,12 @@ import { useState } from "react";
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
 
-import { FileText, FileSpreadsheet, FileJson } from "lucide-react";
+import { FileTextIcon, FileSpreadsheetIcon, FileJsonIcon } from "lucide-react";
 
 const SAVE_OPTIONS = [
-  { id: "text", label: "Save as TEXT", icon: FileText },
-  { id: "csv", label: "Save as CSV", icon: FileSpreadsheet },
-  { id: "json", label: "Save as JSON", icon: FileJson }
+  { id: "text", label: "Save as TEXT", icon: FileTextIcon },
+  { id: "csv", label: "Save as CSV", icon: FileSpreadsheetIcon },
+  { id: "json", label: "Save as JSON", icon: FileJsonIcon }
 ];
 
 export default function ResultSection() {
