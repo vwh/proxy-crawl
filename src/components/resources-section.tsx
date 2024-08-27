@@ -71,6 +71,7 @@ export default function ResourcesSection() {
             className="w-full transition-colors duration-200 ease-in-out"
             onClick={() => handleResourceTypeClick(type.name)}
             title={`Switch to ${type.label}`}
+            disabled={isCrawling}
           >
             {type.label}
           </Button>
@@ -78,7 +79,7 @@ export default function ResourcesSection() {
       </div>
       <Textarea
         ref={resourcesRef}
-        placeholder="Enter proxy resources here..."
+        placeholder="Proxy resources"
         className="h-full resize-none text-sm focus:ring-2 focus:ring-primary"
         spellCheck={false}
         onChange={handleResourceChange}
