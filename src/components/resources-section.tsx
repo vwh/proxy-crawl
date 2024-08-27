@@ -2,7 +2,6 @@ import React, { useRef, useEffect, useCallback } from "react";
 import useStore from "@/store/useStore";
 
 import type { ProxyType } from "@/types";
-
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
 
@@ -61,6 +60,16 @@ export default function ResourcesSection() {
     setTimeout(() => setIsCrawling(false), 3000);
   }, [setIsCrawling]);
 
+  const handleSaveResources = useCallback(() => {
+    // TODO: Implement save functionality
+    console.log("Saving resources");
+  }, []);
+
+  const handleOpenSettings = useCallback(() => {
+    // TODO: Implement settings functionality
+    console.log("Opening settings");
+  }, []);
+
   return (
     <section className="flex grow flex-col gap-4 rounded-lg bg-gray-700 p-4 shadow-md">
       <div className="flex gap-2">
@@ -83,6 +92,7 @@ export default function ResourcesSection() {
         className="h-full resize-none text-sm focus:ring-2 focus:ring-primary"
         spellCheck={false}
         onChange={handleResourceChange}
+        disabled={isCrawling}
       />
       <div className="flex w-full gap-2">
         <Button
@@ -90,7 +100,7 @@ export default function ResourcesSection() {
           className="w-full grow bg-primary transition-colors duration-200 ease-in-out"
           onClick={handleStartCrawling}
           disabled={isCrawling}
-          title={isCrawling ? "Crawling" : "Start Crawling"}
+          title={isCrawling ? "Crawling in progress" : "Start Crawling"}
         >
           <span className="mr-2 font-semibold">
             {isCrawling ? "Crawling" : "Start Crawling"}
@@ -106,8 +116,8 @@ export default function ResourcesSection() {
             variant="outline"
             className="transition-colors duration-200 ease-in-out"
             title="Save resources"
-            onClick={() => setResources(selectedResource, [])}
-            disabled // TODO: Implement save
+            onClick={handleSaveResources}
+            disabled={isCrawling}
           >
             <SaveIcon size={18} />
           </Button>
@@ -115,7 +125,8 @@ export default function ResourcesSection() {
             variant="outline"
             className="transition-colors duration-200 ease-in-out"
             title="Open settings"
-            disabled // TODO: Implement settings
+            onClick={handleOpenSettings}
+            disabled={isCrawling}
           >
             <SettingsIcon size={18} />
           </Button>
