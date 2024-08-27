@@ -52,6 +52,7 @@ export default function ResultSection() {
         placeholder="Crawled results"
         className="grow resize-none focus:ring-2 focus:ring-blue-500"
         value={results.join("\n")}
+        disabled={!results.length}
         readOnly
       />
       <div className="grid grid-cols-1 gap-1 md:grid-cols-3 md:gap-2">
