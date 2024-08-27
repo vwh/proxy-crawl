@@ -1,22 +1,43 @@
-import { useState } from "react";
+import { useEffect } from "react";
+import useStore from "@/store/useStore";
+
+import type { exportType } from "@/types";
 
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
 
 import { FileTextIcon, FileSpreadsheetIcon, FileJsonIcon } from "lucide-react";
 
-const SAVE_OPTIONS = [
-  { id: "text", label: "Save as TEXT", icon: FileTextIcon },
-  { id: "csv", label: "Save as CSV", icon: FileSpreadsheetIcon },
-  { id: "json", label: "Save as JSON", icon: FileJsonIcon }
+const SAVE_OPTIONS: { format: exportType; label: string; icon: any }[] = [
+  { format: "text", label: "Save as TEXT", icon: FileTextIcon },
+  { format: "csv", label: "Save as CSV", icon: FileSpreadsheetIcon },
+  { format: "json", label: "Save as JSON", icon: FileJsonIcon }
 ];
 
 export default function ResultSection() {
-  const [results, setResults] = useState("");
+  const {
+    results,
+    addResult,
+    // setResults,
+    exportAs
+  } = useStore();
 
-  const handleSave = (format: string) => {
-    // TODO: Implement save
-    console.log(`Saving as ${format}`);
+  useEffect(() => {
+    // for demo purposes
+    addResult("test");
+    addResult("test2");
+    addResult("test3");
+  }, []);
+
+  const handleSave = (format: exportType) => {
+    const exportedData = exportAs(format);
+    const blob = new Blob([exportedData], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `results.${format}`;
+    link.click();
+    URL.revokeObjectURL(url);
   };
 
   return (
@@ -24,17 +45,16 @@ export default function ResultSection() {
       <Textarea
         placeholder="Crawled results"
         className="grow resize-none focus:ring-2 focus:ring-blue-500"
-        value={results}
-        onChange={(e) => setResults(e.target.value)}
+        value={results.join("\n")}
         readOnly
       />
       <div className="grid grid-cols-1 gap-2 md:grid-cols-3">
         {SAVE_OPTIONS.map((option) => (
           <Button
-            key={option.id}
+            key={option.format}
             className="flex w-full items-center justify-center transition-colors duration-200 ease-in-out"
             variant="outline"
-            onClick={() => handleSave(option.id)}
+            onClick={() => handleSave(option.format)}
             title={option.label}
             disabled={!results}
             spellCheck={false}

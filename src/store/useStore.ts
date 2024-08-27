@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-import { ProxyType } from "@/types";
+import type { ProxyType, exportType } from "@/types";
 import defaultProxyResources from "@/lib/proxy-resources";
 
 interface StoreState {
@@ -17,7 +17,7 @@ interface StoreActions {
   setResults: (results: string[]) => void;
   addResult: (result: string) => void;
   setIsCrawling: (isCrawling: boolean) => void;
-  exportAs: (format: "text" | "csv" | "json") => string;
+  exportAs: (format: exportType) => string;
 }
 
 const useStore = create<StoreState & StoreActions>((set, get) => ({
@@ -53,7 +53,9 @@ const useStore = create<StoreState & StoreActions>((set, get) => ({
       case "text":
         return results.join("\n");
       case "csv":
-        return results.map((result) => `"${result}"`).join(",");
+        return [
+          ...results.map((result) => `"${result.replace(/"/g, '""')}"`)
+        ].join("\n");
       case "json":
         return JSON.stringify(results, null, 2);
       default:
