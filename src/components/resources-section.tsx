@@ -6,7 +6,12 @@ import type { ProxyType } from "@/types";
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
 
-import { ArrowRightIcon, LoaderCircleIcon } from "lucide-react";
+import {
+  ArrowRightIcon,
+  LoaderCircleIcon,
+  SaveIcon,
+  SettingsIcon
+} from "lucide-react";
 
 const RESOURCE_TYPES: { name: ProxyType; label: string }[] = [
   { name: "http/s", label: "HTTP/S" },
@@ -78,22 +83,43 @@ export default function ResourcesSection() {
         spellCheck={false}
         onChange={handleResourceChange}
       />
-      <Button
-        variant="default"
-        className="w-full bg-primary transition-colors duration-200 ease-in-out"
-        onClick={handleStartCrawling}
-        disabled={isCrawling}
-        title="Start Crawling"
-      >
-        <span className="mr-2 font-semibold">
-          {isCrawling ? "Crawling" : "Start Crawling"}
-        </span>
-        {isCrawling ? (
-          <LoaderCircleIcon size={18} className="animate-spin" />
-        ) : (
-          <ArrowRightIcon size={18} />
-        )}
-      </Button>
+      <div className="flex w-full gap-2">
+        <Button
+          variant="default"
+          className="w-full grow bg-primary transition-colors duration-200 ease-in-out"
+          onClick={handleStartCrawling}
+          disabled={isCrawling}
+          title={isCrawling ? "Crawling" : "Start Crawling"}
+        >
+          <span className="mr-2 font-semibold">
+            {isCrawling ? "Crawling" : "Start Crawling"}
+          </span>
+          {isCrawling ? (
+            <LoaderCircleIcon size={18} className="animate-spin" />
+          ) : (
+            <ArrowRightIcon size={18} />
+          )}
+        </Button>
+        <div className="flex gap-1">
+          <Button
+            variant="outline"
+            className="transition-colors duration-200 ease-in-out"
+            title="Save resources"
+            onClick={() => setResources(selectedResource, [])}
+            disabled // TODO: Implement save
+          >
+            <SaveIcon size={18} />
+          </Button>
+          <Button
+            variant="outline"
+            className="transition-colors duration-200 ease-in-out"
+            title="Open settings"
+            disabled // TODO: Implement settings
+          >
+            <SettingsIcon size={18} />
+          </Button>
+        </div>
+      </div>
     </section>
   );
 }
