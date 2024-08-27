@@ -65,6 +65,7 @@ export default function ResourcesSection() {
             variant={selectedResource === type.name ? "default" : "outline"}
             className="w-full transition-colors duration-200 ease-in-out"
             onClick={() => handleResourceTypeClick(type.name)}
+            title={`Switch to ${type.label}`}
           >
             {type.label}
           </Button>
@@ -82,6 +83,7 @@ export default function ResourcesSection() {
         className="w-full bg-primary transition-colors duration-200 ease-in-out"
         onClick={handleStartCrawling}
         disabled={isCrawling}
+        title="Start Crawling"
       >
         <span className="mr-2 font-semibold">
           {isCrawling ? "Crawling" : "Start Crawling"}
