@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useStore from "@/store/useStore";
 
 import type { exportType } from "@/types";
@@ -6,7 +6,13 @@ import type { exportType } from "@/types";
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
 
-import { FileTextIcon, FileSpreadsheetIcon, FileJsonIcon } from "lucide-react";
+import {
+  FileTextIcon,
+  FileSpreadsheetIcon,
+  FileJsonIcon,
+  ClipboardIcon,
+  ClipboardCheckIcon
+} from "lucide-react";
 
 const SAVE_OPTIONS: { format: exportType; label: string; icon: any }[] = [
   { format: "text", label: "Save as TEXT", icon: FileTextIcon },
@@ -17,17 +23,11 @@ const SAVE_OPTIONS: { format: exportType; label: string; icon: any }[] = [
 export default function ResultSection() {
   const {
     results,
-    addResult,
+    // addResult,
     // setResults,
     exportAs
   } = useStore();
-
-  useEffect(() => {
-    // for demo purposes
-    addResult("test");
-    addResult("test2");
-    addResult("test3");
-  }, []);
+  const [isCopying, setIsCopying] = useState(false);
 
   const handleSave = (format: exportType) => {
     const exportedData = exportAs(format);
@@ -40,6 +40,12 @@ export default function ResultSection() {
     URL.revokeObjectURL(url);
   };
 
+  const handleCopy = () => {
+    setIsCopying(true);
+    navigator.clipboard.writeText(results.join("\n"));
+    setTimeout(() => setIsCopying(false), 2000);
+  };
+
   return (
     <section className="flex grow flex-col gap-4 rounded-lg bg-gray-700 p-4 shadow-md">
       <Textarea
@@ -48,7 +54,7 @@ export default function ResultSection() {
         value={results.join("\n")}
         readOnly
       />
-      <div className="grid grid-cols-1 gap-2 md:grid-cols-3">
+      <div className="grid grid-cols-1 gap-1 md:grid-cols-3 md:gap-2">
         {SAVE_OPTIONS.map((option) => (
           <Button
             key={option.format}
@@ -63,6 +69,21 @@ export default function ResultSection() {
             {option.label}
           </Button>
         ))}
+        <Button
+          className="flex w-full items-center justify-center transition-colors duration-200 ease-in-out md:col-span-3"
+          variant="outline"
+          onClick={handleCopy}
+          title="Copy results to clipboard"
+          disabled={!results}
+          spellCheck={false}
+        >
+          {isCopying ? (
+            <ClipboardCheckIcon className="mr-2" size={18} />
+          ) : (
+            <ClipboardIcon className="mr-2" size={18} />
+          )}
+          Copy to clipboard
+        </Button>
       </div>
     </section>
   );
