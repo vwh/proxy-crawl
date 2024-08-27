@@ -62,7 +62,7 @@ export default function ResultSection() {
             variant="outline"
             onClick={() => handleSave(option.format)}
             title={option.label}
-            disabled={!results}
+            disabled={!results.length}
             spellCheck={false}
           >
             <option.icon className="mr-2" size={18} />
@@ -74,7 +74,7 @@ export default function ResultSection() {
           variant="outline"
           onClick={handleCopy}
           title="Copy results to clipboard"
-          disabled={!results}
+          disabled={!results.length}
           spellCheck={false}
         >
           {isCopying ? (
