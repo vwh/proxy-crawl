@@ -21,12 +21,7 @@ const SAVE_OPTIONS: { format: exportType; label: string; icon: any }[] = [
 ];
 
 export default function ResultSection() {
-  const {
-    results,
-    // addResult,
-    // setResults,
-    exportAs
-  } = useStore();
+  const { results, exportAs } = useStore();
   const [isCopying, setIsCopying] = useState(false);
 
   const handleSave = (format: exportType) => {

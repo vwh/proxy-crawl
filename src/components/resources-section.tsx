@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect } from "react";
 import useStore from "@/store/useStore";
 
-import axios from "axios";
-
 import type { ProxyType } from "@/types";
+
+import { request } from "@/lib/proxy-scrap";
 
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
@@ -15,9 +15,6 @@ const RESOURCE_TYPES: { name: ProxyType; label: string }[] = [
   { name: "socks4", label: "SOCKS4" },
   { name: "socks5", label: "SOCKS5" }
 ];
-
-const PROXY_REGEXP =
-  /(?:^|\D)(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}:\d{1,5})(?:\D|$)/g;
 
 export default function ResourcesSection() {
   const {
@@ -33,8 +30,8 @@ export default function ResourcesSection() {
     resources: stateResources
   } = useStore();
 
+  // Load resources from localStorage when load
   useEffect(() => {
-    // Load resources from localStorage when the component mounts
     const savedResources = localStorage.getItem("resources");
 
     if (savedResources) {
@@ -45,7 +42,7 @@ export default function ResourcesSection() {
         console.error("Failed to parse saved resources:", error);
       }
     }
-  }, [addResources]);
+  }, []);
 
   const handleResourceTypeClick = useCallback(
     (type: ProxyType) => {
@@ -62,53 +59,20 @@ export default function ResourcesSection() {
     [selectedResource, addResources]
   );
 
-  const request = useCallback(
-    async (url: string) => {
-      const proxies = [
-        "", // No CORS
-        "https://cors.eu.org/",
-        "https://corsproxy.io/?"
-      ];
-
-      for (let i = 0; i < proxies.length; i++) {
-        try {
-          const fullUrl = proxies[i] + url;
-          const response = await axios.get(fullUrl);
-
-          const data = response.data;
-          const cleanData =
-            data.match(PROXY_REGEXP)?.map((item: string) => item.trim()) ?? [];
-
-          cleanData.forEach((proxy: string) => {
-            if (proxy && !proxy.includes("127.0.0.1")) {
-              addResult(proxy.replace(/"/g, "").replace(/>/g, ""));
-            }
-          });
-
-          console.log(`Attempt ${i + 1} successful for ${proxies[i] + url}`);
-          break;
-        } catch (error) {
-          console.error(
-            `Attempt ${i + 1} failed for ${proxies[i] + url}:`,
-            error
-          );
-          if (i === proxies.length - 1) {
-            console.error(`All attempts failed for ${proxies[i] + url}`);
-          }
-        }
-      }
-    },
-    [addResult]
-  );
-
   const handleStartCrawling = useCallback(async () => {
     setIsCrawling(true);
     setResults([]);
 
     const resources = getSelectedResources();
-    await Promise.all(resources.map(request));
-
-    // TODO: remove duplicates
+    await Promise.all(
+      resources.map(async (r) => {
+        const results = await request(r);
+        if (results)
+          for (const result of results) {
+            addResult(result);
+          }
+      })
+    );
 
     setIsCrawling(false);
   }, [setIsCrawling, setResults, getSelectedResources, request]);
