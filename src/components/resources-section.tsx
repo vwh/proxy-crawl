@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import useStore from "@/store/useStore";
 
 import axios from "axios";
@@ -22,22 +22,30 @@ const PROXY_REGEXP =
 export default function ResourcesSection() {
   const {
     getSelectedResources,
+    addResources,
     setResources,
     setSelectedResource,
     selectedResource,
     isCrawling,
     setIsCrawling,
     addResult,
-    setResults
+    setResults,
+    resources: stateResources
   } = useStore();
 
-  const resourcesRef = useRef<HTMLTextAreaElement>(null);
-
   useEffect(() => {
-    if (resourcesRef.current) {
-      resourcesRef.current.value = getSelectedResources().join("\n");
+    // Load resources from localStorage when the component mounts
+    const savedResources = localStorage.getItem("resources");
+
+    if (savedResources) {
+      try {
+        const parsedResources = JSON.parse(savedResources);
+        setResources(parsedResources);
+      } catch (error) {
+        console.error("Failed to parse saved resources:", error);
+      }
     }
-  }, [selectedResource, getSelectedResources]);
+  }, [addResources]);
 
   const handleResourceTypeClick = useCallback(
     (type: ProxyType) => {
@@ -49,9 +57,9 @@ export default function ResourcesSection() {
   const handleResourceChange = useCallback(
     (event: React.ChangeEvent<HTMLTextAreaElement>) => {
       const resources = event.target.value.split("\n").filter(Boolean);
-      setResources(selectedResource, resources);
+      addResources(selectedResource, resources);
     },
-    [selectedResource, setResources]
+    [selectedResource, addResources]
   );
 
   const request = useCallback(
@@ -106,9 +114,13 @@ export default function ResourcesSection() {
   }, [setIsCrawling, setResults, getSelectedResources, request]);
 
   const handleSaveResources = useCallback(() => {
-    // TODO: Implement save functionality
-    console.log("Saving resources");
-  }, []);
+    try {
+      localStorage.setItem("resources", JSON.stringify(stateResources));
+      console.log("Resources saved successfully.");
+    } catch (error) {
+      console.error("Failed to save resources:", error);
+    }
+  }, [stateResources]);
 
   return (
     <section className="flex grow flex-col gap-4 rounded-lg bg-gray-700 p-4 shadow-md">
@@ -127,10 +139,10 @@ export default function ResourcesSection() {
         ))}
       </div>
       <Textarea
-        ref={resourcesRef}
         placeholder="Proxy resources"
         className="h-full resize-none text-sm focus:ring-2 focus:ring-primary"
         spellCheck={false}
+        value={getSelectedResources().join("\n")}
         onChange={handleResourceChange}
         disabled={isCrawling}
       />

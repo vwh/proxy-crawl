@@ -11,7 +11,8 @@ interface StoreState {
 }
 
 interface StoreActions {
-  setResources: (type: ProxyType, resources: string[]) => void;
+  addResources: (type: ProxyType, resources: string[]) => void;
+  setResources: (resources: Record<ProxyType, string[]>) => void;
   setSelectedResource: (resource: ProxyType) => void;
   getSelectedResources: () => string[];
   setResults: (results: string[]) => void;
@@ -31,7 +32,8 @@ const useStore = create<StoreState & StoreActions>((set, get) => ({
   results: [],
   isCrawling: false,
 
-  setResources: (type, resources) =>
+  setResources: (resources) => set({ resources }),
+  addResources: (type, resources) =>
     set((state) => ({
       resources: { ...state.resources, [type]: resources }
     })),
