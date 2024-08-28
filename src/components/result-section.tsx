@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import useStore from "@/store/useStore";
 
 import type { exportType } from "@/types";
@@ -47,10 +47,17 @@ export default function ResultSection() {
   };
 
   return (
-    <section className="flex grow flex-col gap-4 rounded-lg bg-gray-700 p-4 shadow-md">
+    <section className="relative flex grow flex-col gap-4 rounded-lg bg-gray-700 p-4 shadow-md">
+      {results.length > 0 && (
+        <p className="absolute left-0 top-0 z-50 w-full rounded-t bg-primary p-2 text-sm text-background">
+          {results.length} Results
+        </p>
+      )}
       <Textarea
         placeholder="Crawled results"
-        className="grow resize-none focus:ring-2 focus:ring-blue-500"
+        className={`grow resize-none focus:ring-2 focus:ring-blue-500 ${
+          results.length ? "mt-8" : "mt-0"
+        }`}
         value={results.join("\n")}
         disabled={!results.length}
         readOnly

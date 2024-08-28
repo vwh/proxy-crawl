@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useCallback } from "react";
 import useStore from "@/store/useStore";
 
 import type { ProxyType } from "@/types";
+
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
 
@@ -18,6 +19,9 @@ const RESOURCE_TYPES: { name: ProxyType; label: string }[] = [
   { name: "socks5", label: "SOCKS5" }
 ];
 
+const PROXY_REGEXP =
+  /(?:^|\D)(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}:\d{1,5})(?:\D|$)/g;
+
 export default function ResourcesSection() {
   const {
     getSelectedResources,
@@ -25,12 +29,13 @@ export default function ResourcesSection() {
     setSelectedResource,
     selectedResource,
     isCrawling,
-    setIsCrawling
+    setIsCrawling,
+    addResult,
+    setResults
   } = useStore();
 
   const resourcesRef = useRef<HTMLTextAreaElement>(null);
 
-  // Update the textarea value when the selected resource changes
   useEffect(() => {
     if (resourcesRef.current) {
       resourcesRef.current.value = getSelectedResources().join("\n");
@@ -52,13 +57,48 @@ export default function ResourcesSection() {
     [selectedResource, setResources]
   );
 
-  const handleStartCrawling = useCallback(() => {
+  const request = useCallback(
+    async (url: string, i = 0) => {
+      const proxy = [
+        "", // try without proxy first
+        "https://corsproxy.io/?"
+      ];
+
+      try {
+        const fullUrl = proxy[i] ? proxy[i] + url : url;
+        const response = await fetch(fullUrl);
+        const data = await response.text();
+
+        const cleanData =
+          data
+            .match(PROXY_REGEXP)
+            ?.map((item) => item.match(PROXY_REGEXP)?.[0]?.trim()) ?? [];
+
+        cleanData.forEach((proxy) => {
+          if (proxy) {
+            addResult(proxy);
+          }
+        });
+      } catch {
+        if (i < proxy.length - 1) {
+          return request(url, i + 1);
+        }
+      }
+    },
+    [addResult]
+  );
+
+  const handleStartCrawling = useCallback(async () => {
     setIsCrawling(true);
-    // TODO: Implement actual crawling logic here
-    console.log("Start crawling");
-    // For demonstration
-    setTimeout(() => setIsCrawling(false), 3000);
-  }, [setIsCrawling]);
+    setResults([]);
+
+    const resources = getSelectedResources();
+    await Promise.all(resources.map(request));
+
+    // TODO: remove duplicates
+
+    setIsCrawling(false);
+  }, [setIsCrawling, setResults, getSelectedResources, request]);
 
   const handleSaveResources = useCallback(() => {
     // TODO: Implement save functionality
