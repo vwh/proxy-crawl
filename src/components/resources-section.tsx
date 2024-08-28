@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import useStore from "@/store/useStore";
 
 import type { ProxyType } from "@/types";
@@ -8,7 +8,12 @@ import { request } from "@/lib/proxy-scrap";
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
 
-import { ArrowRightIcon, LoaderCircleIcon, SaveIcon } from "lucide-react";
+import {
+  ArrowRightIcon,
+  LoaderCircleIcon,
+  SaveIcon,
+  CheckIcon
+} from "lucide-react";
 
 const RESOURCE_TYPES: { name: ProxyType; label: string }[] = [
   { name: "http/s", label: "HTTP/S" },
@@ -29,6 +34,7 @@ export default function ResourcesSection() {
     setResults,
     resources: stateResources
   } = useStore();
+  const [isSaving, setIsSaving] = useState(false);
 
   // Load resources from localStorage when load
   useEffect(() => {
@@ -78,11 +84,14 @@ export default function ResourcesSection() {
   }, [setIsCrawling, setResults, getSelectedResources, request]);
 
   const handleSaveResources = useCallback(() => {
+    setIsSaving(true);
     try {
       localStorage.setItem("resources", JSON.stringify(stateResources));
       console.log("Resources saved successfully.");
     } catch (error) {
       console.error("Failed to save resources:", error);
+    } finally {
+      setTimeout(() => setIsSaving(false), 2000);
     }
   }, [stateResources]);
 
@@ -135,7 +144,17 @@ export default function ResourcesSection() {
             onClick={handleSaveResources}
             disabled={isCrawling}
           >
-            <SaveIcon size={18} />
+            {isSaving ? (
+              <CheckIcon
+                size={18}
+                className={`transition-opacity duration-300 ease-in ${isSaving ? "opacity-100" : "opacity-0"}`}
+              />
+            ) : (
+              <SaveIcon
+                size={18}
+                className={`transition-opacity duration-300 ease-in ${!isSaving ? "opacity-100" : "opacity-0"}`}
+              />
+            )}
           </Button>
         </div>
       </div>
