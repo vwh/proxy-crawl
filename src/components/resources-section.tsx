@@ -1,6 +1,8 @@
 import React, { useRef, useEffect, useCallback } from "react";
 import useStore from "@/store/useStore";
 
+import axios from "axios";
+
 import type { ProxyType } from "@/types";
 
 import { Button } from "./ui/button";
@@ -68,17 +70,13 @@ export default function ResourcesSection() {
       for (let i = 0; i < proxies.length; i++) {
         try {
           const fullUrl = proxies[i] + url;
-          const response = await fetch(fullUrl);
+          const response = await axios.get(fullUrl);
 
-          if (!response.ok) {
-            throw new Error(`Request failed with status ${response.status}`);
-          }
-
-          const data = await response.text();
+          const data = response.data;
           const cleanData =
-            data.match(PROXY_REGEXP)?.map((item) => item.trim()) ?? [];
+            data.match(PROXY_REGEXP)?.map((item: string) => item.trim()) ?? [];
 
-          cleanData.forEach((proxy) => {
+          cleanData.forEach((proxy: string) => {
             if (proxy && !proxy.includes("127.0.0.1")) {
               addResult(proxy.replace(/"/g, "").replace(/>/g, ""));
             }
@@ -86,8 +84,11 @@ export default function ResourcesSection() {
 
           console.log(`Attempt ${i + 1} successful for ${proxies[i] + url}`);
           break;
-        } catch {
-          console.error(`Attempt ${i + 1} failed for ${proxies[i] + url}:`);
+        } catch (error) {
+          console.error(
+            `Attempt ${i + 1} failed for ${proxies[i] + url}:`,
+            error
+          );
           if (i === proxies.length - 1) {
             console.error(`All attempts failed for ${proxies[i] + url}`);
           }
