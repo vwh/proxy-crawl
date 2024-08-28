@@ -1,0 +1,28 @@
+{
+  "theme_color": "#D4E7F7",
+  "background_color": "#000000",
+  "icons": [
+    {
+      "purpose": "maskable",
+      "sizes": "512x512",
+      "src": "./icons/android-chrome-512x512.png",
+      "type": "image/png"
+    },
+    {
+      "purpose": "any",
+      "sizes": "512x512",
+      "src": "./icons/android-chrome-512x512.png",
+      "type": "image/png"
+    }
+  ],
+  "orientation": "any",
+  "display": "standalone",
+  "dir": "left",
+  "lang": "en-US",
+  "start_url": "/proxy-crawl/",
+  "scope": "/proxy-crawl/",
+  "description": "Scrape proxies from all over the world in your browser",
+  "id": "vwh-proxy-crawl",
+  "name": "Proxy Crawl",
+  "short_name": "Proxy Crawl"
+}

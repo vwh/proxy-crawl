@@ -5,12 +5,22 @@ import { defineConfig } from "vite";
 import compression from "vite-plugin-compression";
 import dynamicImport from "vite-plugin-dynamic-import";
 import viteImagemin from "vite-plugin-imagemin";
+import { VitePWA } from "vite-plugin-pwa";
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: "/proxy-crawl/",
   plugins: [
     compression(),
     react(),
+    VitePWA({
+      registerType: "autoUpdate",
+      workbox: {
+        cleanupOutdatedCaches: true,
+        clientsClaim: true,
+        skipWaiting: true
+      }
+    }),
     dynamicImport(),
     viteImagemin({
       gifsicle: {
