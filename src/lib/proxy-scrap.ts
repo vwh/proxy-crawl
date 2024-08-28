@@ -29,7 +29,7 @@ export const request = async (url: string) => {
       const cleanData =
         data.match(PROXY_REGEXP)?.map((item: string) => item.trim()) ?? [];
 
-      cleanData.forEach((proxy: string) => {
+      cleanData.map((proxy: string) => {
         if (proxy && !proxy.includes("127.0.0.1")) {
           return proxy.replace(/"/g, "").replace(/>/g, "");
         }
