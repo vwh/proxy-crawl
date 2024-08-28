@@ -58,30 +58,39 @@ export default function ResourcesSection() {
   );
 
   const request = useCallback(
-    async (url: string, i = 0) => {
-      const proxy = [
-        "", // try without proxy first
+    async (url: string) => {
+      const proxies = [
+        "", // No CORS
+        "https://cors.eu.org/",
         "https://corsproxy.io/?"
       ];
 
-      try {
-        const fullUrl = proxy[i] ? proxy[i] + url : url;
-        const response = await fetch(fullUrl);
-        const data = await response.text();
+      for (let i = 0; i < proxies.length; i++) {
+        try {
+          const fullUrl = proxies[i] + url;
+          const response = await fetch(fullUrl);
 
-        const cleanData =
-          data
-            .match(PROXY_REGEXP)
-            ?.map((item) => item.match(PROXY_REGEXP)?.[0]?.trim()) ?? [];
-
-        cleanData.forEach((proxy) => {
-          if (proxy && !proxy.includes("127.0.0.1")) {
-            addResult(proxy.replace(/"/g, ""));
+          if (!response.ok) {
+            throw new Error(`Request failed with status ${response.status}`);
           }
-        });
-      } catch {
-        if (i < proxy.length - 1) {
-          return request(url, i + 1);
+
+          const data = await response.text();
+          const cleanData =
+            data.match(PROXY_REGEXP)?.map((item) => item.trim()) ?? [];
+
+          cleanData.forEach((proxy) => {
+            if (proxy && !proxy.includes("127.0.0.1")) {
+              addResult(proxy.replace(/"/g, "").replace(/>/g, ""));
+            }
+          });
+
+          console.log(`Attempt ${i + 1} successful for ${proxies[i] + url}`);
+          break;
+        } catch {
+          console.error(`Attempt ${i + 1} failed for ${proxies[i] + url}:`);
+          if (i === proxies.length - 1) {
+            console.error(`All attempts failed for ${proxies[i] + url}`);
+          }
         }
       }
     },
