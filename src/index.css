@@ -39,18 +39,18 @@
   }
 
   ::-webkit-scrollbar {
-    width: 8px;
+    width: 10px;
     height: 8px;
   }
 
   ::-webkit-scrollbar-track {
     background: var(--scrollbar-track);
-    border-radius: var(--radius);
+    border-radius: calc(var(--radius) - 6px);
   }
 
   ::-webkit-scrollbar-thumb {
     background: var(--scrollbar-thumb);
-    border-radius: var(--radius);
+    border-radius: calc(var(--radius) - 8px);
     transition: background 0.2s ease-in-out;
   }
 

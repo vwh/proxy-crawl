@@ -31,7 +31,6 @@ const useStore = create<StoreState & StoreActions>((set, get) => ({
   results: [],
   isCrawling: false,
 
-  // TODO: setResources is not used now, use it when implementing getting value from localStorage
   setResources: (type, resources) =>
     set((state) => ({
       resources: { ...state.resources, [type]: resources }

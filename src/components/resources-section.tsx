@@ -8,12 +8,7 @@ import type { ProxyType } from "@/types";
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
 
-import {
-  ArrowRightIcon,
-  LoaderCircleIcon,
-  SaveIcon,
-  SettingsIcon
-} from "lucide-react";
+import { ArrowRightIcon, LoaderCircleIcon, SaveIcon } from "lucide-react";
 
 const RESOURCE_TYPES: { name: ProxyType; label: string }[] = [
   { name: "http/s", label: "HTTP/S" },
@@ -115,11 +110,6 @@ export default function ResourcesSection() {
     console.log("Saving resources");
   }, []);
 
-  const handleOpenSettings = useCallback(() => {
-    // TODO: Implement settings functionality
-    console.log("Opening settings");
-  }, []);
-
   return (
     <section className="flex grow flex-col gap-4 rounded-lg bg-gray-700 p-4 shadow-md">
       <div className="flex gap-2">
@@ -170,15 +160,6 @@ export default function ResourcesSection() {
             disabled={isCrawling}
           >
             <SaveIcon size={18} />
-          </Button>
-          <Button
-            variant="outline"
-            className="transition-colors duration-200 ease-in-out"
-            title="Open settings"
-            onClick={handleOpenSettings}
-            disabled={isCrawling}
-          >
-            <SettingsIcon size={18} />
           </Button>
         </div>
       </div>
