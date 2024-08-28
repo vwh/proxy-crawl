@@ -75,8 +75,8 @@ export default function ResourcesSection() {
             ?.map((item) => item.match(PROXY_REGEXP)?.[0]?.trim()) ?? [];
 
         cleanData.forEach((proxy) => {
-          if (proxy) {
-            addResult(proxy);
+          if (proxy && !proxy.includes("127.0.0.1")) {
+            addResult(proxy.replace(/"/g, ""));
           }
         });
       } catch {
