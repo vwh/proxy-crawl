@@ -9,13 +9,13 @@ const CORS_SERVERS = [
   "https://corsproxy.io/?"
 ];
 
-export const request = async (url: string) => {
+const scrap = async (url: string): Promise<string[]> => {
   const isGoodUrl = url.match(
     /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/
   );
   if (!isGoodUrl) {
     console.error("Invalid URL:", url);
-    return;
+    return [];
   }
 
   for (let i = 0; i < CORS_SERVERS.length; i++) {
@@ -26,25 +26,32 @@ export const request = async (url: string) => {
       });
 
       const data = response.data;
-      const cleanData =
-        data.match(PROXY_REGEXP)?.map((item: string) => item.trim()) ?? [];
+      const matches = data.match(PROXY_REGEXP);
 
-      cleanData.map((proxy: string) => {
-        if (proxy && !proxy.includes("127.0.0.1")) {
-          return proxy.replace(/"/g, "").replace(/>/g, "");
-        }
-      });
+      if (!matches) {
+        console.log(`No proxies found in attempt ${i + 1} for ${fullUrl}`);
+        continue;
+      }
 
-      console.log(`Attempt ${i + 1} successful for ${CORS_SERVERS[i] + url}`);
-      return cleanData as string[];
+      const cleanData = matches
+        .map((item: string) => item.trim())
+        .filter((proxy: string) => proxy && !proxy.includes("127.0.0.1"))
+        .map((proxy: string) => proxy.replace(/"/g, "").replace(/>/g, ""));
+
+      console.log(`Attempt ${i + 1} successful for ${fullUrl}`);
+      return cleanData;
     } catch (error) {
       console.error(
         `Attempt ${i + 1} failed for ${CORS_SERVERS[i] + url}:`,
         error
       );
       if (i === CORS_SERVERS.length - 1) {
-        console.error(`All attempts failed for ${CORS_SERVERS[i] + url}`);
+        console.error(`All attempts failed for ${url}`);
       }
     }
   }
+
+  return [];
 };
+
+export default scrap;

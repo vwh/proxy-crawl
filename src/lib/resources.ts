@@ -1,5 +1,7 @@
-const defaultProxyResources = {
-  http: [
+import { ProxyType } from "@/types";
+
+const defaultResources: Record<ProxyType, string[]> = {
+  "http/s": [
     "https://openproxy.space/list/http",
     "https://api.proxyscrape.com/v3/free-proxy-list/get?request=displayproxies&protocol=http&proxy_format=ipport&format=text&timeout=20000",
     "https://proxyspace.pro/http.txt",
@@ -69,4 +71,4 @@ const defaultProxyResources = {
   ]
 };
 
-export default defaultProxyResources;
+export default defaultResources;
