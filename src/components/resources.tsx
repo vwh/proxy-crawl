@@ -22,9 +22,15 @@ const RESOURCE_TYPES: { name: ProxyType; label: string }[] = [
 
 interface ResourcesProps {
   setResults: React.Dispatch<React.SetStateAction<string[]>>;
+  setLengths: React.Dispatch<
+    React.SetStateAction<{
+      oldLength: number;
+      newLength: number;
+    }>
+  >;
 }
 
-export default function Resources({ setResults }: ResourcesProps) {
+export default function Resources({ setResults, setLengths }: ResourcesProps) {
   const [isSaving, setIsSaving] = useState(false);
   const [isCrawling, setIsCrawling] = useState(false);
   const [selectedResource, setSelectedResource] = useState<ProxyType>("http/s");
@@ -57,22 +63,36 @@ export default function Resources({ setResults }: ResourcesProps) {
   const handleStartCrawling = useCallback(async () => {
     setIsCrawling(true);
     setResults([]);
+    setLengths({ oldLength: 0, newLength: 0 });
     try {
       const neededResources = Array.from(
         // remove duplicates from resources
         new Set(Object.values(resources[selectedResource]).flat())
       );
-      neededResources.forEach(async (url) => {
+      const crawlPromises = neededResources.map(async (url) => {
         const results = await scrap(url);
         const flattenedResults = results
           .flat()
           .filter((result): result is string => typeof result === "string");
+        setLengths((prev) => ({
+          ...prev,
+          oldLength: prev.oldLength + flattenedResults.length
+        }));
         setResults((prev) => [...prev, ...flattenedResults]);
       });
-      // remove duplicates from results
+      await Promise.all(crawlPromises);
     } catch (error) {
       console.error("Error during crawling:", error);
     } finally {
+      // remove duplicates from results
+      setResults((prev) => {
+        const uniqueResults = Array.from(new Set(prev));
+        setLengths((prevLengths) => ({
+          ...prevLengths,
+          newLength: uniqueResults.length
+        }));
+        return uniqueResults;
+      });
       setIsCrawling(false);
     }
   }, [resources, selectedResource, setResults]);

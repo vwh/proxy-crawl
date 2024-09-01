@@ -25,9 +25,13 @@ const SAVE_OPTIONS: {
 
 interface ResultProps {
   results: string[];
+  lengths: {
+    oldLength: number;
+    newLength: number;
+  };
 }
 
-export default function Results({ results }: ResultProps) {
+export default function Results({ results, lengths }: ResultProps) {
   const [isCopying, setIsCopying] = useState(false);
 
   const handleExport = useCallback(
@@ -92,6 +96,12 @@ export default function Results({ results }: ResultProps) {
       {results.length > 0 && (
         <p className="absolute left-0 top-0 z-50 w-full rounded-t bg-primary p-2 text-sm text-background">
           {results.length} Results
+          {lengths.newLength > 0 && (
+            <span>
+              , Remove {Math.abs(lengths.oldLength - lengths.newLength)}{" "}
+              duplicates
+            </span>
+          )}
         </p>
       )}
       <Textarea
