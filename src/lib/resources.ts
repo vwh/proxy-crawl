@@ -1,4 +1,4 @@
-import { ProxyType } from "@/types";
+import type { ProxyType } from "@/types";
 
 const defaultResources: Record<ProxyType, string[]> = {
   "http/s": [

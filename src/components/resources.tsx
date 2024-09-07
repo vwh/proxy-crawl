@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useMemo } from "react";
+import { useCallback, useState, useMemo } from "react";
 
 import defaultResources from "@/lib/resources";
 import scrap from "@/lib/scraping";
@@ -95,7 +95,7 @@ export default function Resources({ setResults, setLengths }: ResourcesProps) {
       });
       setIsCrawling(false);
     }
-  }, [resources, selectedResource, setResults]);
+  }, [resources, selectedResource, setResults, setLengths]);
 
   const handleSaveResources = useCallback(() => {
     setIsSaving(true);

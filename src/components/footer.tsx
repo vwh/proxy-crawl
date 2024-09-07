@@ -5,6 +5,7 @@ export default function Footer() {
         <li>
           <a
             target="_blank"
+            rel="noreferrer"
             href="https://github.com/vwh/proxy-crawl"
             className="hover:underline"
           >
