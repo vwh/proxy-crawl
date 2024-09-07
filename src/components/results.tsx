@@ -98,7 +98,7 @@ export default function Results({ results, lengths }: ResultProps) {
           {results.length} Results
           {lengths.newLength > 0 && (
             <span>
-              , Remove {Math.abs(lengths.oldLength - lengths.newLength)}{" "}
+              , Removed {Math.abs(lengths.oldLength - lengths.newLength)}{" "}
               duplicates
             </span>
           )}
