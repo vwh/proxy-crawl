@@ -1,7 +1,7 @@
 <div align="center">
 
 # Proxy Crawl
-Scrape proxies from all over the world directly in your browser.
+Scrape proxies from all over the world directly in your browser
 
 [![License](https://img.shields.io/github/license/vwh/proxy-crawl?label=License)](https://github.com/vwh/proxy-crawl/blob/main/LICENSE)
 [![CodeQL](https://github.com/vwh/proxy-crawl/actions/workflows/codeql.yml/badge.svg)](https://github.com/vwh/proxy-crawl/actions/workflows/codeql.yml)
@@ -11,11 +11,11 @@ Scrape proxies from all over the world directly in your browser.
 
 <div align="center">
   <a href="https://vwh.github.io/proxy-crawl/" target="_blank">
-      <img src="https://github.com/user-attachments/assets/9747e584-0c6b-4c70-9eb4-bf5e966eec52" alt="Proxy Crawl Preview">
+      <img src="https://github.com/user-attachments/assets/2d3ce0b3-a061-4e7f-be33-e16d12ecfc75" alt="Proxy Crawl Preview">
   </a>
 </div>
 
-## 🌟 Features
+## Features
 
 <table>
   <tr>
@@ -58,10 +58,10 @@ Scrape proxies from all over the world directly in your browser.
   </tr>
 </table>
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! Feel free to open a pull request with your improvements or fixes.
 
-## 📄 License
+## License
 
 Distributed under the MIT License. See [LICENSE](https://github.com/vwh/proxy-crawl/blob/main/LICENSE) for more information.
