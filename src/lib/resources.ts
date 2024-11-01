@@ -25,7 +25,9 @@ const defaultResources: Record<ProxyType, string[]> = {
     "https://raw.githubusercontent.com/mmpx12/proxy-list/master/http.txt",
     "https://raw.githubusercontent.com/roosterkid/openproxylist/master/HTTPS_RAW.txt",
     "https://raw.githubusercontent.com/ErcinDedeoglu/proxies/main/proxies/https.txt",
-    "https://raw.githubusercontent.com/ErcinDedeoglu/proxies/main/proxies/http.txt"
+    "https://raw.githubusercontent.com/ErcinDedeoglu/proxies/main/proxies/http.txt",
+    "https://raw.githubusercontent.com/Tsprnay/Proxy-lists/master/proxies/http.txt",
+    "https://raw.githubusercontent.com/Tsprnay/Proxy-lists/master/proxies/https.txt"
   ],
   socks4: [
     "https://openproxy.space/list/socks4",
@@ -47,7 +49,8 @@ const defaultResources: Record<ProxyType, string[]> = {
     "https://raw.githubusercontent.com/TheSpeedX/PROXY-List/master/socks4.txt",
     "https://raw.githubusercontent.com/TheSpeedX/PROXY-List/master/http.txt",
     "https://raw.githubusercontent.com/TheSpeedX/PROXY-List/master/httpS.txt",
-    "https://raw.githubusercontent.com/ErcinDedeoglu/proxies/main/proxies/socks4.txt"
+    "https://raw.githubusercontent.com/ErcinDedeoglu/proxies/main/proxies/socks4.txt",
+    "https://raw.githubusercontent.com/Tsprnay/Proxy-lists/master/proxies/socks4.txt"
   ],
   socks5: [
     "https://openproxy.space/list/socks5",
@@ -67,7 +70,8 @@ const defaultResources: Record<ProxyType, string[]> = {
     "https://raw.githubusercontent.com/mmpx12/proxy-list/master/socks5.txt",
     "https://raw.githubusercontent.com/roosterkid/openproxylist/master/SOCKS5_RAW.txt",
     "https://raw.githubusercontent.com/TheSpeedX/PROXY-List/master/socks5.txt",
-    "https://raw.githubusercontent.com/ErcinDedeoglu/proxies/main/proxies/socks5.txt"
+    "https://raw.githubusercontent.com/ErcinDedeoglu/proxies/main/proxies/socks5.txt",
+    "https://raw.githubusercontent.com/Tsprnay/Proxy-lists/master/proxies/socks5.txt"
   ]
 };
 
