@@ -1,6 +1,7 @@
 import { useState, useCallback, useMemo } from "react";
 
 import type { exportType } from "@/types";
+import dateGenerator from "@/lib/date";
 
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
@@ -59,7 +60,7 @@ export default function Results({ results, lengths }: ResultProps) {
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      link.download = `results.${format}`;
+      link.download = `proxy-${dateGenerator()}.${format}`;
       link.click();
       URL.revokeObjectURL(url);
     },
