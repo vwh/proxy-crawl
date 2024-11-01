@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-import Resources from "./components/resources";
-import Results from "./components/results";
+import Resources from "@/components/resources";
+import Results from "@/components/results";
 
 export default function App() {
   const [results, setResults] = useState<string[]>([]);

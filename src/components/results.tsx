@@ -11,13 +11,16 @@ import {
   FileSpreadsheetIcon,
   FileJsonIcon,
   ClipboardIcon,
-  ClipboardCheckIcon
+  ClipboardCheckIcon,
+  type LucideProps
 } from "lucide-react";
 
 const SAVE_OPTIONS: {
   format: exportType;
   label: string;
-  icon: React.ComponentType<any>;
+  icon: React.ForwardRefExoticComponent<
+    Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>
+  >;
 }[] = [
   { format: "txt", label: "Save as TEXT", icon: FileTextIcon },
   { format: "csv", label: "Save as CSV", icon: FileSpreadsheetIcon },
