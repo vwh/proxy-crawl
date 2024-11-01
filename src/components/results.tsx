@@ -18,7 +18,7 @@ const SAVE_OPTIONS: {
   label: string;
   icon: React.ComponentType<any>;
 }[] = [
-  { format: "text", label: "Save as TEXT", icon: FileTextIcon },
+  { format: "txt", label: "Save as TEXT", icon: FileTextIcon },
   { format: "csv", label: "Save as CSV", icon: FileSpreadsheetIcon },
   { format: "json", label: "Save as JSON", icon: FileJsonIcon }
 ];
@@ -37,7 +37,7 @@ export default function Results({ results, lengths }: ResultProps) {
   const handleExport = useCallback(
     (format: exportType): string => {
       switch (format) {
-        case "text":
+        case "txt":
           return results.join("\n");
         case "csv":
           return results
