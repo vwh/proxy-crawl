@@ -95,12 +95,13 @@ export default function Results({ results, lengths }: ResultProps) {
     <section className="relative flex grow flex-col gap-4 rounded-lg bg-gray-700 p-4 shadow-md">
       {results.length > 0 && (
         <p className="absolute left-0 top-0 z-50 w-full rounded-t bg-primary p-2 text-sm text-background">
-          {results.length} Results
-          {lengths.newLength > 0 && (
+          {lengths.newLength > 0 ? (
             <span>
-              , Removed {Math.abs(lengths.oldLength - lengths.newLength)}{" "}
-              duplicates
+              {results.length} Results after removing{" "}
+              {Math.abs(lengths.oldLength - lengths.newLength)} duplicates
             </span>
+          ) : (
+            <span>{results.length} Results</span>
           )}
         </p>
       )}
